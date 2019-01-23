@@ -1,4 +1,4 @@
-package pl.com.psc.tt.hexample;
+package edu.perek.hexample;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

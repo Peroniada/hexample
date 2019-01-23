@@ -14,7 +14,7 @@ apply plugin: 'java'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 
-group = 'pl.com.psc.tt'
+group = 'edu.psc.tt'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '1.8'
 
