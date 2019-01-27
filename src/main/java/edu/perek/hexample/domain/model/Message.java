@@ -1,5 +1,32 @@
 package edu.perek.hexample.domain.model;
 
-public class Message {
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
 
+import java.util.UUID;
+
+@EqualsAndHashCode
+@Builder
+public class Message {
+    private UUID id;
+    private UUID ownerId;
+    private String content;
+
+    public Message(UUID id, UUID ownerId, String content) {
+        this.id = id;
+        this.ownerId = ownerId;
+        this.content = content;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public UUID getOwnerId() {
+        return ownerId;
+    }
+
+    public String getContent() {
+        return content;
+    }
 }
