@@ -23,15 +23,15 @@ public class TestCypherServiceAdapter implements CypherService {
     @Before
     public void setup() {
 
-        EncryptMachine encryptMachine = (msg) -> new Message(msg.getId(), msg.getOwnerId(), StringUtils.reverse(msg.getContent()));
-        DecryptMachine decryptMachine = (msg) -> new Message(msg.getId(), msg.getOwnerId(), StringUtils.reverse(msg.getContent()));
+        EncryptMachine encryptMachine = this::reverseString;
+        DecryptMachine decryptMachine = this::reverseString;
 
         cypherMachineFacade = new CypherMachineFacade(encryptMachine, decryptMachine, new MockMessageRepository(), new MockMessageSender());
     }
 
     @Override
-    public void sendMessage(SendMessageRequest request) {
-        cypherMachineFacade.sendEncryptedMessage(message, "example@email.com");
+    public void sendMessage(Message message, String recipient) {
+        cypherMachineFacade.sendEncryptedMessage(message, recipient);
     }
 
     @Override
@@ -94,5 +94,9 @@ public class TestCypherServiceAdapter implements CypherService {
 
     private UUID randomUUID() {
         return UUID.randomUUID();
+    }
+
+    private Message reverseString(Message msg) {
+        return new Message(msg.getId(), msg.getOwnerId(), StringUtils.reverse(msg.getContent()));
     }
 }

@@ -1,10 +1,12 @@
 package edu.perek.hexample;
 
 import edu.perek.hexample.adapter.secondary.MapperMessageRepository;
+import edu.perek.hexample.application.CypherServiceImpl;
 import edu.perek.hexample.domain.CypherMachineFacade;
 import edu.perek.hexample.domain.DecryptMachine;
 import edu.perek.hexample.domain.EncryptMachine;
 import edu.perek.hexample.domain.model.Message;
+import edu.perek.hexample.domain.port.primary.CypherService;
 import edu.perek.hexample.domain.port.secondary.MessageRepository;
 import edu.perek.hexample.domain.port.secondary.MessageSender;
 import org.apache.commons.lang3.StringUtils;
@@ -25,7 +27,11 @@ public class HexampleConfiguration {
     }
 
     @Bean
-    public CypherMachineFacade cypherMachineFacade() {
+    public CypherService cypherService() {
+        return new CypherServiceImpl(cypherMachineFacade());
+    }
+
+    private CypherMachineFacade cypherMachineFacade() {
         EncryptMachine encryptMachine = (msg) -> new Message(msg.getId(), msg.getOwnerId(), StringUtils.reverse(msg.getContent()));
         DecryptMachine decryptMachine = (msg) -> new Message(msg.getId(), msg.getOwnerId(), StringUtils.reverse(msg.getContent()));
         return new CypherMachineFacade(encryptMachine, decryptMachine, mapperMessageRepository, messageSender);

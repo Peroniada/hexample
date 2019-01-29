@@ -2,11 +2,13 @@ package edu.perek.hexample.domain.model;
 
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import java.util.UUID;
 
 @EqualsAndHashCode
 @Builder
+@NoArgsConstructor
 public class Message {
     private UUID id;
     private UUID ownerId;

@@ -1,56 +1,49 @@
 package edu.perek.hexample.adapter.primary;
 
-import edu.perek.hexample.domain.CypherMachineFacade;
 import edu.perek.hexample.domain.model.Message;
 import edu.perek.hexample.domain.port.primary.CypherService;
-import edu.perek.hexample.domain.port.primary.requests.SendMessageRequest;
+import edu.perek.hexample.adapter.primary.requests.SendMessageRequest;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
 
 @RestController()
-public class MessageEndpoint implements CypherService {
+public class MessageEndpoint{
 
-    private CypherMachineFacade machineFacade;
+    private CypherService cypherService;
 
-    public MessageEndpoint(CypherMachineFacade machineFacade) {
-        this.machineFacade = machineFacade;
+    public MessageEndpoint(CypherService cypherService) {
+        this.cypherService = cypherService;
     }
 
-    @Override
     @PostMapping(path = "/send")
     public void sendMessage(@RequestBody SendMessageRequest request) {
-        machineFacade.sendEncryptedMessage(request.message, request.recipient);
+        cypherService.sendMessage(request.message, request.recipient);
     }
 
-    @Override
     @GetMapping(path = "/getMessages")
     public List<Message> getEncryptedMessages() {
-        return machineFacade.findAllMessages();
+        return cypherService.getEncryptedMessages();
     }
 
-    @Override
     @PostMapping(path = "/decrypt")
     public Message decryptMessage(@RequestBody Message message) {
-        return machineFacade.decrypt(message);
+        return cypherService.decryptMessage(message);
     }
 
-    @Override
     @PostMapping(path = "/encrypt")
     public Message encryptMessage(Message message) {
-        return machineFacade.encrypt(message);
+        return cypherService.encryptMessage(message);
     }
 
-    @Override
     @GetMapping(path = "/decrypt-persisted")
-    public Message decryptPersistedMessage(@PathVariable UUID uuid) {
-        return machineFacade.getDecryptedMessage(uuid);
+    public Message decryptPersistedMessage(@RequestParam UUID uuid) {
+        return cypherService.decryptPersistedMessage(uuid);
     }
 
-    @Override
-    @GetMapping(path = "/persist")
+    @PostMapping(path = "/persist")
     public void persistEncryptedMessage(@RequestBody Message message) {
-        machineFacade.persistEncryptedMessage(message);
+        cypherService.persistEncryptedMessage(message);
     }
 }
